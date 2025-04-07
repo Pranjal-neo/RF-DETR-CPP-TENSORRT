@@ -1,4 +1,6 @@
 # RF_DETR C++ TensorRT
+![RF_DETR C++ TensorRT ](asset/Yolo_v12_cpp_tenosrrt.PNG)
+![RF_DETR C++ TensorRT ](asset/Results-2.gif)
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue?style=flat&logo=GitHub)](https://github.com/yourusername/RF_DETR-TensorRT)
 [![License](https://img.shields.io/badge/License-MIT-lightgreen?style=flat&logo=License)](https://github.com/yourusername/RF_DETR-TensorRT/blob/main/LICENSE)
@@ -29,7 +31,7 @@ The **RF_DETR C++ TensorRT Project** is a high-performance object detection solu
     │   ├── main.cpp            # Main entry point for the application
     │   ├── RF_DETR.cpp         # RF_DETR implementation
     │   └── preprocess.cu       # CUDA preprocessing code [cite: 1]
-    ├── assets/                 # (Optional) Resources like images, videos, etc.
+    ├── assets/                 # Resources
     └── build/                  # Compiled binaries
 
 ## 🛠️ Setup
@@ -37,9 +39,9 @@ The **RF_DETR C++ TensorRT Project** is a high-performance object detection solu
 ### Prerequisites
 
 * **CMake** (version 3.18 or higher)
-* **TensorRT** (Specify the version used for optimal compatibility)
-* **CUDA Toolkit** (Specify the compatible CUDA version)
-* **OpenCV** (Specify the OpenCV version used)
+* **TensorRT** (8.6.1.6)
+* **CUDA Toolkit** (11.7)
+* **OpenCV** (4.10)
 * **NVIDIA GPU** (with appropriate compute capability)
 
 ### Installation
@@ -47,8 +49,8 @@ The **RF_DETR C++ TensorRT Project** is a high-performance object detection solu
 1.  Clone the repository:
 
     ```bash
-    git clone [https://github.com/yourusername/RF_DETR-TensorRT.git](https://www.google.com/search?q=https://github.com/yourusername/RF_DETR-TensorRT.git)
-    cd RF_DETR-TensorRT
+    git clone [https://github.com/hamdiboukamcha/RF-DETR-CPP-TENSORRT.git](https://www.google.com/search?q=https://github.com/hamdiboukamcha/RF-DETR-CPP-TENSORRT.git)
+    cd RF-DETR-CPP-TENSORRT
     ```
 
 2.  Update the OpenCV and TensorRT paths in `CMakeLists.txt`:
@@ -119,10 +121,16 @@ The `CMakeLists.txt` file is used to configure the project build. Key configurat
 
 ## 📞 Contact
 
-For inquiries, please contact:
-
-\[Your Contact Information Here] (e.g., GitHub profile, email, LinkedIn)
+For advanced inquiries, feel free to contact me on LinkedIn: <a href="https://www.linkedin.com/in/hamdi-boukamcha/" target="_blank"> <img src="asset/blue-linkedin-logo.png" alt="LinkedIn" width="32" height="32"></a>
 
 ## 📜 Citation
 
 If you use this code in your research, please cite the repository as follows:
+
+        @misc{boukamcha2025-rf-detr,
+            author = {Hamdi Boukamcha},
+            title = {RF-DETR-CPP-TENSORRT},
+            year = {2025},
+            publisher = {GitHub},
+            howpublished = {\url{https://github.com/hamdiboukamcha/RF-DETR-CPP-TENSORRT/}},
+        }
