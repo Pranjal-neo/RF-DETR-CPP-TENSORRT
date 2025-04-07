@@ -1,5 +1,5 @@
 # RF_DETR C++ TensorRT
-![RF_DETR C++ TensorRT ](asset/Yolo_v12_cpp_tenosrrt.PNG)
+![RF_DETR C++ TensorRT ](asset/RF_DETR-CPP-TensorRT.JPG)
 ![RF_DETR C++ TensorRT ](asset/Results-2.gif)
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue?style=flat&logo=GitHub)](https://github.com/yourusername/RF_DETR-TensorRT)
