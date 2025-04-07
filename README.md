@@ -1,6 +1,5 @@
 # RF_DETR C++ TensorRT
 ![RF_DETR C++ TensorRT ](asset/RF_DETR-CPP-TensorRT.JPG)
-![RF_DETR C++ TensorRT ](asset/Results-2.gif)
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repo-blue?style=flat&logo=GitHub)](https://github.com/yourusername/RF_DETR-TensorRT)
 [![License](https://img.shields.io/badge/License-MIT-lightgreen?style=flat&logo=License)](https://github.com/yourusername/RF_DETR-TensorRT/blob/main/LICENSE)
@@ -8,6 +7,7 @@
 ## 📜 Citation
 
 The **RF_DETR C++ TensorRT Project** is a high-performance object detection solution implemented in C++ and optimized using NVIDIA TensorRT. This project leverages the RF_DETR model architecture to deliver fast and accurate object detection, utilizing TensorRT to maximize inference efficiency and performance.
+![RF_DETR C++ TensorRT ](asset/Ouput.gif)
 
 ---
 
