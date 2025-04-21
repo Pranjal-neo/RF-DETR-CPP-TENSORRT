@@ -42,7 +42,7 @@ The **RF_DETR C++ TensorRT Project** is a high-performance object detection solu
 * **TensorRT** (8.6.1.6)
 * **CUDA Toolkit** (11.7)
 * **OpenCV** (4.10)
-* **NVIDIA GPU** (with appropriate compute capability)
+* **NVIDIA GPU** 
 
 ### Installation
 
@@ -90,8 +90,8 @@ The **RF_DETR C++ TensorRT Project** is a high-performance object detection solu
 
 The compiled application can be used to perform object detection using a TensorRT engine.  Specific usage instructions will depend on the final application design (e.g., command-line arguments).  Here's a general outline:
 
-1.  **Engine Generation:** If you need to create a TensorRT engine from an RF_DETR ONNX model, you'll likely have a conversion tool or functionality within the project.  *(Add specific instructions if applicable)*
-2.  **Running Inference:** The application will take inputs (images or videos) and the TensorRT engine as input.  It will then perform object detection and output the results (e.g., bounding boxes, class labels, confidence scores).  *(Add specific command-line arguments or API usage if applicable)*
+1.  **Engine Generation:** If you need to create a TensorRT engine from an RF_DETR ONNX model, you'll likely have a conversion tool or functionality within the project.
+2.  **Running Inference:** The application will take inputs (images or videos) and the TensorRT engine as input.  It will then perform object detection and output the results (e.g., bounding boxes, class labels, confidence scores).  
 
     Example (Illustrative):
 
@@ -99,7 +99,6 @@ The compiled application can be used to perform object detection using a TensorR
     ./rf_detr_app --engine rf_detr.engine --input image.jpg --output results.json
     ```
 
-    *(Replace with the actual usage for your application)*
 
 ## ⚙️ Configuration
 
