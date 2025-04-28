@@ -1,96 +1,101 @@
 ﻿cmake_minimum_required(VERSION 3.18)
 project(RF_DETR_DLL LANGUAGES CXX CUDA)
 
+
+# require at least C++17 for std::filesystem
+set(CMAKE_CXX_STANDARD       17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS      OFF)
+
 # --- EDIT THESE PATHS ---
-# Set the exact paths to your OpenCV and TensorRT installations here.
-# Use forward slashes / even on Windows.
+set(MY_OpenCV_INCLUDE_DIRS   "/usr/local/include/opencv4")
+set(MY_OpenCV_LIB_DIR        "/usr/local/lib")
 
-set(MY_OpenCV_INCLUDE_DIRS "F:/Program Files (x86)/opencv-4.10.0-windows/opencv/build/include") # EDIT THIS PATH
-set(MY_OpenCV_LIB_DIR "F:/Program Files (x86)/opencv-4.10.0-windows/opencv/build/x64/vc16/lib") # EDIT THIS PATH (Corrected Format)
+set(MY_TensorRT_INCLUDE_DIRS "/usr/include/x86_64-linux-gnu")
+set(MY_TensorRT_LIB_DIR      "/usr/lib/x86_64-linux-gnu")
 
-set(MY_TensorRT_INCLUDE_DIRS "F:/Program Files/TensorRT-8.6.1.6/include")  # EDIT THIS PATH (Corrected Format)
-set(MY_TensorRT_LIB_DIR      "F:/Program Files/TensorRT-8.6.1.6/lib")      # EDIT THIS PATH (e.g., "C:/TensorRT-8.x.x.x/lib")
-
-# --- Verify Library Names ---
-# Check these library names against the actual files in your LIB_DIRs.
-# Remove the 'lib' prefix and file extensions (.so, .lib, .dll). Adjust if needed.
-set(MY_OpenCV_LIBS opencv_world4100d)
-set(MY_TensorRT_LIBS nvinfer nvparsers nvonnxparser)                           # EDIT THESE NAMES if needed
-
+set(MY_OpenCV_LIBS opencv_world)
+set(MY_TensorRT_LIBS nvinfer nvparsers nvonnxparser)
 # --- End Editable Paths ---
 
-
-# --- Find CUDA ---
-# Keep finding CUDA automatically as it's usually well-integrated.
 find_package(CUDA REQUIRED)
 message(STATUS "Found CUDA Toolkit: ${CUDA_TOOLKIT_ROOT_DIR}")
 message(STATUS "Using CUDA includes: ${CUDA_INCLUDE_DIRS}")
 message(STATUS "Using CUDA libraries: ${CUDA_LIBRARIES}")
 
-
-# --- Verify Provided Paths ---
+# sanity checks
 if(NOT EXISTS "${MY_OpenCV_INCLUDE_DIRS}")
-    message(FATAL_ERROR "OpenCV Include directory not found: ${MY_OpenCV_INCLUDE_DIRS} - Please edit CMakeLists.txt")
+  message(FATAL_ERROR "OpenCV include dir not found: ${MY_OpenCV_INCLUDE_DIRS}")
 endif()
 if(NOT EXISTS "${MY_OpenCV_LIB_DIR}")
-    message(FATAL_ERROR "OpenCV Library directory not found: ${MY_OpenCV_LIB_DIR} - Please edit CMakeLists.txt")
+  message(FATAL_ERROR "OpenCV lib dir not found:     ${MY_OpenCV_LIB_DIR}")
 endif()
 if(NOT EXISTS "${MY_TensorRT_INCLUDE_DIRS}")
-    message(FATAL_ERROR "TensorRT Include directory not found: ${MY_TensorRT_INCLUDE_DIRS} - Please edit CMakeLists.txt")
+  message(FATAL_ERROR "TensorRT include dir not found: ${MY_TensorRT_INCLUDE_DIRS}")
 endif()
 if(NOT EXISTS "${MY_TensorRT_LIB_DIR}")
-    message(FATAL_ERROR "TensorRT Library directory not found: ${MY_TensorRT_LIB_DIR} - Please edit CMakeLists.txt")
+  message(FATAL_ERROR "TensorRT lib dir not found:     ${MY_TensorRT_LIB_DIR}")
 endif()
-message(STATUS "Using OpenCV include: ${MY_OpenCV_INCLUDE_DIRS}")
-message(STATUS "Using OpenCV lib dir: ${MY_OpenCV_LIB_DIR}")
-message(STATUS "Using TensorRT include: ${MY_TensorRT_INCLUDE_DIRS}")
-message(STATUS "Using TensorRT lib dir: ${MY_TensorRT_LIB_DIR}")
 
+message(STATUS "OpenCV include: ${MY_OpenCV_INCLUDE_DIRS}")
+message(STATUS "OpenCV  lib dir: ${MY_OpenCV_LIB_DIR}")
+message(STATUS "TensorRT include: ${MY_TensorRT_INCLUDE_DIRS}")
+message(STATUS "TensorRT  lib dir: ${MY_TensorRT_LIB_DIR}")
 
-# --- Library Definition ---
+# --- RF_DETR shared library ---
 add_library(RF_DETR SHARED
-    src/RF_DETR.cpp
-    src/preprocess.cu
+  src/RF_DETR.cpp
+  src/preprocess.cu
 )
 target_compile_definitions(RF_DETR PRIVATE API_EXPORTS)
-
-
-# --- Include Directories ---
-# Add the manually set include directories
 target_include_directories(RF_DETR PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${MY_OpenCV_INCLUDE_DIRS}
-    ${CUDA_INCLUDE_DIRS}        # From find_package(CUDA)
-    ${MY_TensorRT_INCLUDE_DIRS}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${MY_OpenCV_INCLUDE_DIRS}
+  ${CUDA_INCLUDE_DIRS}
+  ${MY_TensorRT_INCLUDE_DIRS}
 )
-
-
-# --- Link Dependencies ---
-# Specify the directories where the linker should look for libraries
 target_link_directories(RF_DETR PUBLIC
-    ${MY_OpenCV_LIB_DIR}
-    # CUDA libraries are usually handled by ${CUDA_LIBRARIES} which includes paths
-    ${MY_TensorRT_LIB_DIR}
+  ${MY_OpenCV_LIB_DIR}
+  ${MY_TensorRT_LIB_DIR}
 )
-
-# Link the specific libraries by name (without paths)
 target_link_libraries(RF_DETR PUBLIC
-    ${MY_OpenCV_LIBS}           # Manually listed OpenCV lib names
-    ${CUDA_LIBRARIES}           # From find_package(CUDA)
-    ${CUDA_CUBLAS_LIBRARIES}    # Add other CUDA libs as needed
-    ${MY_TensorRT_LIBS}         # Manually listed TensorRT lib names
+  ${MY_OpenCV_LIBS}
+  ${CUDA_LIBRARIES}
+  ${CUDA_CUBLAS_LIBRARIES}
+  ${MY_TensorRT_LIBS}
+)
+target_compile_options(RF_DETR PRIVATE
+  -Wno-deprecated-declarations
 )
 
-
-# --- CUDA Specific Settings ---
 set(CMAKE_CUDA_STANDARD 14)
 set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-# set(CMAKE_CUDA_ARCHITECTURES 70 75 80 86) # Example architectures
 
+# --- rf_detr_app executable ---
+add_executable(rf_detr_app
+  main.cpp
+)
+# so that app can #include "RF_DETR.h"
+target_include_directories(rf_detr_app PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+# link against your shared lib (and transitively everything RF_DETR needs)
+target_link_libraries(rf_detr_app PRIVATE
+  RF_DETR
+  Threads::Threads         # if you need pthread
+  stdc++fs                 # for std::filesystem
+)
+# suppress the same deprecation warnings in the app
+target_compile_options(rf_detr_app PRIVATE
+  -Wno-deprecated-declarations
+)
 
-# --- Output Directory (Optional) ---
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# (Optional) place binaries in bin/, libraries in lib/
+set_target_properties(RF_DETR PROPERTIES
+  LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+)
+set_target_properties(rf_detr_app PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
 
-
-message(STATUS "Configuration complete for RF_DETR DLL using hardcoded paths.")
+message(STATUS "Config complete — RF_DETR library and rf_detr_app executable ready.")

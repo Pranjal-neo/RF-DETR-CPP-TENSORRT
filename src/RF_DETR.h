@@ -35,7 +35,7 @@ public:
     // Add conf_threshold parameter to postprocess
     void postprocess(std::vector<Detection>& output, int originalWidth, int originalHeight, float conf_threshold);
     // Add const& for input detections
-    void draw(cv::Mat& image, const std::vector<Detection>& output, float conf_threshold = 0.5f);
+    void draw(cv::Mat& image, const std::vector<Detection>& output, int frame_idx, float conf_threshold = 0.5f);
 
 private:
     // Private methods for internal implementation
@@ -79,6 +79,7 @@ private:
     // Add more output indices if needed (e.g., classes)
 
     // Store output dimensions directly
+    nvinfer1::Dims input_dims;
     nvinfer1::Dims output_dims_boxes;
     nvinfer1::Dims output_dims_scores;
 
